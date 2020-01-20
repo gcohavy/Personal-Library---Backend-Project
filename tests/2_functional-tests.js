@@ -46,8 +46,8 @@ suite('Functional Tests', function() {
           .send({ title: 'Title' })
           .end((err,res)=>{
             assert.equal(res.status, 200);
-  //          assert.exists(res.body._id);
-  //          assert.equal(res.body.title, 'Title');
+            assert.exists(res.body._id);
+            assert.equal(res.body.title, 'Title');
             done();
           })
       });

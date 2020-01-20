@@ -25,22 +25,21 @@ module.exports = function (app) {
     })
 
     .post(function (req, res){  
-      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true}, function(err, client) {
-        if (err) console.log('Error connecting to DB');
-        
+      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB');     
         var db = client.db('test');
-        var collection = db.collection('library');
-        
+        var collection = db.collection('library');      
         console.log('MongoDB initialization successful');
+        
         var title = req.body.title;
         if(!title) return res.send('Missing title');
         var book = {title: title, comments: []};
-        console.log('book');
         collection.insertOne(book, function (err, doc) {
-          if(err) console.log('Error posting book to library');
-          console.log('book');
+          if(err) console.log('Error posting book to library: ' + err);
+          console.log(book);
           return res.json(book);
         });
+        
         client.close();
       });
       //response will contain new book object including atleast _id and title
