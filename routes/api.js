@@ -20,6 +20,16 @@ module.exports = function (app) {
 
   app.route('/api/books')
     .get(function (req, res){
+      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library');     
+        
+        collection.find((err, doc)=>{
+          if(err) console.log(err);
+          res.json(doc.ops);
+        })
+      });
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
     })
