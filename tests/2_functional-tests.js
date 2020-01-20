@@ -43,9 +43,7 @@ suite('Functional Tests', function() {
       test('Test POST /api/books with title', function(done) {
         chai.request(server)
           .post('/api/books')
-          .send({
-            title: 'Title'
-          })
+          .send({ title: 'Title' })
           .end((err,res)=>{
             assert.equal(res.status, 200);
   //          assert.exists(res.body._id);
