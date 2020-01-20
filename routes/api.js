@@ -13,12 +13,14 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 const MONGODB_CONNECTION_STRING = process.env.DB;
 
-MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, client) {
-  if (err) console.log('Error connecting to DB');
-  var db = client.db('test');
+
 
 module.exports = function (app) {
-
+  
+MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true}, function(err, client) {
+  if (err) console.log('Error connecting to DB');
+  var db = client.db('test');
+  
   app.route('/api/books')
     .get(function (req, res){
       //response will be array of book objects
@@ -27,6 +29,7 @@ module.exports = function (app) {
     
     .post(function (req, res){
       var title = req.body.title;
+      if(!title) return res.send('Missing title');
       //response will contain new book object including atleast _id and title
     })
     
@@ -53,5 +56,6 @@ module.exports = function (app) {
       //if successful response will be 'delete successful'
     });
   
-};
+client.close();
 });
+};
