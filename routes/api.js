@@ -47,6 +47,7 @@ module.exports = function (app) {
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
           //console.log(doc);
+          doc.ops[0]._id = doc.ops.length;
           return res.json(doc.ops[0]);
         });
       });
