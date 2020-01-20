@@ -26,7 +26,7 @@ module.exports = function (app) {
 
     .post(function (req, res){  
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
-        if (err) console.log('Error connecting to DB');     
+        if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
@@ -35,13 +35,11 @@ module.exports = function (app) {
         if(!title) return res.send('Missing title');
         var book = {title: title, comments: []};
         collection.insertOne(book, function (err, doc) {
-          if(err) console.log('Error posting book to library: ' + err);
+          if(err) console.log('Error posting book to library:\n' + err);
           //console.log(doc);
           return res.json(doc.ops[0]);
         });
-        
       });
-      //response will contain new book object including atleast _id and title
     })
 
     .delete(function(req, res){
