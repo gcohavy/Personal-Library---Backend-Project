@@ -48,12 +48,19 @@ suite('Functional Tests', function() {
             assert.equal(res.status, 200);
             assert.exists(res.body._id);
             assert.equal(res.body.title, 'Title');
+            assert.exists(res.body.comments);
             done();
           })
       });
       
       test('Test POST /api/books with no title given', function(done) {
-        //done();
+        chai.request(server)
+        .post('/api/books')
+        .end((err, res)=> {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'Missing title');
+          done();
+        })
       });
       
     });
