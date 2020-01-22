@@ -24,11 +24,11 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');     
-        
+        collection.insertOne()
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
-          console.log(doc);
+          //console.log(doc);
           for (var book in doc.ops) {
             result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
           }
