@@ -92,19 +92,23 @@ suite('Functional Tests', function() {
       test('Test GET /api/books/[id] with id not in db',  function(done){
         chai.request(server)
         .get('/api/books/[id]')
-        .send({ id: ida})
+        .send({ id: '7abc'})
         .end((err,res)=>{
           assert.equal(res.status, 200);
-          assert.isArray(res.body);
-          assert.exists(res.body[0].title);
-          assert.exists(res.body[0].commentcount);
-          assert.exists(res.body[0]._id);    
+          
           done();
         })        
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        //done();
+        chai.request(server)
+        .get('/api/books/[id]')
+        .send({ id: ida})
+        .end((err,res)=>{
+          assert.equal(res.status, 200);
+          
+          done();
+        })
       });
       
     });
