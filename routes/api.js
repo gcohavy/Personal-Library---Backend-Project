@@ -27,7 +27,11 @@ module.exports = function (app) {
         
         collection.find((err, doc)=>{
           if(err) console.log(err);
-          res.json(doc.ops);
+          var result = [];
+          for (var book in doc.ops) {
+            result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
+          }
+          return res.json(result);
         })
       });
       //response will be array of book objects
