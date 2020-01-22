@@ -26,16 +26,22 @@ module.exports = function (app) {
         var collection = db.collection('library');     
         collection.insertOne({title: 'ExTitle', comments: ['This is a forced entry for testing purposes']}, (err, result)=>{
           if(err) console.log(err);
-          console.log(result.ops)
+          //console.log(result.ops)
         })
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
           //console.log(doc);
-          for (var book in doc.ops) {
-            result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
+          if(doc.ops){
+            for (var book in doc.ops) {
+              result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
+            }
           }
-          console.log(result);
+          else {
+            result.push({title: 'No Titles', _})
+          }
+          
+          //console.log(result);
           return res.json(result);
         })
       });
@@ -56,7 +62,7 @@ module.exports = function (app) {
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
           doc.ops[0]._id = doc.ops.length;
-          console.log(doc.ops);
+          //console.log(doc.ops);
           return res.json(doc.ops[0]);
         });
       });
