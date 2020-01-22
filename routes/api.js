@@ -28,9 +28,11 @@ module.exports = function (app) {
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
+          console.log(doc.ops);
           for (var book in doc.ops) {
             result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
           }
+          console.log(result);
           return res.json(result);
         })
       });
@@ -66,6 +68,14 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
+      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library');      
+        //console.log('MongoDB initialization successful');
+        
+        
+      });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
 

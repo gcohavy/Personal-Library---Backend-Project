@@ -74,7 +74,9 @@ suite('Functional Tests', function() {
         .end((err,res)=>{
           assert.equal(res.status, 200);
           assert.isArray(res.body);
-          assert.exists(res.body[0].title)
+          assert.exists(res.body[0].title);
+          assert.exists(res.body[0].commentcount);
+          assert.exists(res.body[0]._id);    
           done();
         })
       });      
