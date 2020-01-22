@@ -11,6 +11,8 @@ var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
 
+var ida;
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
@@ -76,7 +78,8 @@ suite('Functional Tests', function() {
           assert.isArray(res.body);
           assert.exists(res.body[0].title);
           assert.exists(res.body[0].commentcount);
-          assert.exists(res.body[0]._id);    
+          assert.exists(res.body[0]._id);
+          ida = res.body[0]._id;
           done();
         })
       });      
@@ -87,7 +90,17 @@ suite('Functional Tests', function() {
     suite('GET /api/books/[id] => book object with [id]', function(){
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
-        //done();
+        chai.request(server)
+        .get('/api/books/[id]')
+        .send({ id: ida})
+        .end((err,res)=>{
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.exists(res.body[0].title);
+          assert.exists(res.body[0].commentcount);
+          assert.exists(res.body[0]._id);    
+          done();
+        })        
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){

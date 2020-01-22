@@ -23,11 +23,7 @@ module.exports = function (app) {
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
-        var collection = db.collection('library');     
-        collection.insertOne({title: 'ExTitle', comments: ['This is a forced entry for testing purposes']}, (err, result)=>{
-          if(err) console.log(err);
-          //console.log(result.ops)
-        })
+        var collection = db.collection('library'); 
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
@@ -38,7 +34,7 @@ module.exports = function (app) {
             }
           }
           else {
-            result.push({title: 'No Titles', _})
+            result.push({title: 'No Titles', _id:0, commentcount: 0});
           }
           
           //console.log(result);
@@ -82,7 +78,10 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        
+        collection.findOne({_id: bookid}, (err, doc)=>{
+          if(err) console.log(err);
+          else return res.json(doc)
+        })
         
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
