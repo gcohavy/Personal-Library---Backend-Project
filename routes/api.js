@@ -28,7 +28,7 @@ module.exports = function (app) {
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
-          console.log(doc.ops);
+          console.log(doc);
           for (var book in doc.ops) {
             result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
           }
