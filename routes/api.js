@@ -24,7 +24,10 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');     
-        collection.insertOne()
+        collection.insertOne({title: 'ExTitle', comments: ['This is a forced entry for testing purposes']}, (err, result)=>{
+          if(err) console.log(err);
+          console.log(result.ops)
+        })
         collection.find((err, doc)=>{
           if(err) console.log(err);
           var result = [];
@@ -52,8 +55,8 @@ module.exports = function (app) {
         var book = {title: title, comments: []};
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
-          //console.log(doc);
           doc.ops[0]._id = doc.ops.length;
+          console.log(doc.ops);
           return res.json(doc.ops[0]);
         });
       });
