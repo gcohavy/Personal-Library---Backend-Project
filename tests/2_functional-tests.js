@@ -95,14 +95,15 @@ suite('Functional Tests', function() {
         .send({ id: '7abc'})
         .end((err,res)=>{
           assert.equal(res.status, 200);
-          
+          //console.log(res);
+          assert.equal(res.text, 'Book does not exist');
           done();
         })        
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
         chai.request(server)
-        .get('/api/books/[id]')
+        .get('/api/books/:id')
         .send({ id: ida})
         .end((err,res)=>{
           assert.equal(res.status, 200);
