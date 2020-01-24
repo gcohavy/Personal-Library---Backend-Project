@@ -88,19 +88,20 @@ module.exports = function (app) {
 
   app.route('/api/books/:id')
     .get(function (req, res){
+      console.log('in the get function');
       var bookid = req.params.id;
-      //console.log(req.params.id)
+      var uid = new ObjectId(bookid);
+      console.log(uid);
+      console.log(req.params.id);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        collection.findOne({_id: bookid}).toArray((err, ret)=>{
-          if(err) console.log(err);
-          console.log(ret);
-          if(ret.length===0) return res.send('Book does not exist');
-          return res.json(ret);
-        })
+        console.log(bookid);
+        collection.findOne({_id: 1000}).then(result=>{
+          result ? console.log(result) : console.log('no result'); 
+        });
         
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
