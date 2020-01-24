@@ -31,6 +31,7 @@ module.exports = function (app) {
           if(err) console.log(err);
           else console.log('book successfully inserted: ' + ret);
         })
+        console.log(ObjectId(1000))
   });
   
 //routing begins
