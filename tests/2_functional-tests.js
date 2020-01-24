@@ -91,8 +91,7 @@ suite('Functional Tests', function() {
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
         chai.request(server)
-        .get('/api/books/[id]')
-        .send({ id: '7abc'})
+        .get('/api/books/7abc' )
         .end((err,res)=>{
           assert.equal(res.status, 200);
           //console.log(res);
@@ -103,8 +102,7 @@ suite('Functional Tests', function() {
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
         chai.request(server)
-        .get('/api/books/:id')
-        .send({ id: ida})
+        .get('/api/books/' + ida)
         .end((err,res)=>{
           assert.equal(res.status, 200);
           
