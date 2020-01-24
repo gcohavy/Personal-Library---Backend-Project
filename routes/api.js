@@ -17,6 +17,18 @@ const MONGODB_CONNECTION_STRING = process.env.DB;
 
 module.exports = function (app) {
 
+  MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library');      
+        console.log('MongoDB initialization successful');
+        collection.deleteOne()
+        collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
+          if(err) console.log(err);
+          else console.log('book successfully inserted: ' + ret);
+        })
+  });
+  
 
   app.route('/api/books')
     .get(function (req, res){
@@ -73,14 +85,17 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-      console.log(req.params.id)
+      //console.log(req.params.id)
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
         collection.findOne({_id: bookid}, (err, doc)=>{
-          if(err) return res.text('Book does not exist');
+          //console.log('inside the collection');
+          if(err) console.log(err);
+          console.log(!doc);
+          if(!doc) res.text('Book does not exist');
           else return res.json(doc)
         })
         
