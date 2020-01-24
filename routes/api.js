@@ -95,13 +95,11 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        collection.findOne({_id: bookid}, (err, doc)=>{
-          //console.log('inside the collection');
+        collection.findOne({_id: bookid}).toArray((err, ret)=>{
           if(err) console.log(err);
-          console.log(!doc);
-          console.log(bookid);
-          if(!doc) res.send('Book does not exist');
-          else return res.json(doc)
+          console.log(ret);
+          if(ret.length===0) return res.send('Book does not exist');
+          return res.json(ret);
         })
         
       });
