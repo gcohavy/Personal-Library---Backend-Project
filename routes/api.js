@@ -17,19 +17,23 @@ const MONGODB_CONNECTION_STRING = process.env.DB;
 
 module.exports = function (app) {
 
+  //insert a book for testing purposes
   MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         console.log('MongoDB initialization successful');
-        collection.deleteOne()
+        collection.deleteOne({_id: 1000}, (err, ret)=>{
+          if(err) console.log(err);
+          else console.log('delete successfull');
+        })
         collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('book successfully inserted: ' + ret);
         })
   });
   
-
+//routing begins
   app.route('/api/books')
     .get(function (req, res){
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
@@ -95,7 +99,8 @@ module.exports = function (app) {
           //console.log('inside the collection');
           if(err) console.log(err);
           console.log(!doc);
-          if(!doc) res.text('Book does not exist');
+          console.log(bookid);
+          if(!doc) res.send('Book does not exist');
           else return res.json(doc)
         })
         
