@@ -32,7 +32,7 @@ module.exports = function (app) {
           if(err) console.log(err);
           else console.log('book successfully inserted: ' + ret);
         });
-        collection.findOne({_id: 1000}).then((err, ret) => {
+        collection.findOne({_id: 1000}, (err, ret) => {
           if(err) console.log('ERROR: ' + err);
           !ret ? console.log('No success fam') : console.log(ret);
         })
@@ -102,7 +102,7 @@ module.exports = function (app) {
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
         console.log(ObjectId(bookid));
-        collection.findOne({_id: sampleId}).then((err,result)=>{
+        collection.findOne({_id: 1000}).then((err,result)=>{
           if (err) console.log('ERROR: ' + err);
           console.log('we in baby');
           result ? console.log(result) : console.log('no result'); 
