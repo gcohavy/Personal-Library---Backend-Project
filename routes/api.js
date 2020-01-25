@@ -24,27 +24,26 @@ module.exports = function (app) {
         var collection = db.collection('library'); 
         var wait = false;
         console.log('MongoDB initialization successful');
+    
         collection.deleteOne({_id: 1000}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
         })
-        function insert () {
+        async function insert () {
           collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
-            else console.log('book successfully inserted: ' + ret);
-            wait = true;
-            return ret.ops[0];
-          });        
+            else return console.log('book successfully inserted: ' + ret);
+          });   
         }
-        
-        console.log(!wait);
-        if(wait) {
-          console.log('we"re good man')
+        async function find() {
+          await insert();
           collection.findOne({_id: 1000}, (err, ret) => {
             if(err) console.log('ERROR: ' + err);
             !ret ? console.log('No success fam') : console.log('success fam: ' + ret);
           })
         }
+        insert();
+        find();
         //console.log(sampleId)
   });
   
