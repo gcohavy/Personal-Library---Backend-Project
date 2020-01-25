@@ -23,16 +23,20 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');      
         console.log('MongoDB initialization successful');
-        collection.deleteOne({_id: sampleId}, (err, ret)=>{
+        collection.deleteOne({_id: 1000}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
         })
         
-        collection.insertOne({_id: sampleId, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
+        collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('book successfully inserted: ' + ret);
         });
-        console.log(sampleId)
+        collection.findOne({_id: 1000}).then((err, ret) => {
+          if(err) console.log('ERROR: ' + err);
+          !ret ? console.log('No success fam') : console.log(ret);
+        })
+        //console.log(sampleId)
   });
   
 //routing begins
@@ -99,7 +103,7 @@ module.exports = function (app) {
         //console.log('MongoDB initialization successful');
         console.log(ObjectId(bookid));
         collection.findOne({_id: sampleId}).then((err,result)=>{
-          if (!err) console.log('ERROR: ' + err);
+          if (err) console.log('ERROR: ' + err);
           console.log('we in baby');
           result ? console.log(result) : console.log('no result'); 
         });
