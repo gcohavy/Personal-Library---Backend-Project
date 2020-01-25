@@ -42,7 +42,6 @@ module.exports = function (app) {
             !ret ? console.log('No success fam') : console.log('success fam: ' + ret);
           })
         }
-        insert();
         find();
         //console.log(sampleId)
   });
@@ -87,8 +86,7 @@ module.exports = function (app) {
         var book = {title: title, comments: []};
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
-          doc.ops[0]._id = doc.ops.length;
-          //console.log(doc.ops);
+          console.log(doc.ops);
           return res.json(doc.ops[0]);
         });
       });
@@ -103,17 +101,16 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-      var oid = new ObjectId(bookid);
+    console.log(bookid);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        console.log(ObjectId(bookid));
-        collection.findOne({_id: 1000}).then((err,result)=>{
-          if (err) console.log('ERROR: ' + err);
-          console.log('we in baby');
-          result ? console.log(result) : console.log('no result'); 
+        collection.findOne({_id:1000}).then((error,result)=>{
+          if (err) return console.log('ERROR: ' + error);
+          //console.log('we in baby');
+          result ? console.log(result) : console.log('no result:\n' + result); 
         });
         
       });
