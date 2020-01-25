@@ -51,6 +51,7 @@ suite('Functional Tests', function() {
             assert.exists(res.body._id);
             assert.equal(res.body.title, 'Title');
             assert.exists(res.body.comments);
+            ida = res.body._id;
             done();
           })
       });
@@ -102,7 +103,7 @@ suite('Functional Tests', function() {
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
         chai.request(server)
-        .get('/api/books/1000')
+        .get('/api/books/' + ida)
         .end((err,res)=>{
           assert.equal(res.status, 200);
           console.log(res.body);

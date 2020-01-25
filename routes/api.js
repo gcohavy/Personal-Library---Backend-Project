@@ -21,21 +21,30 @@ module.exports = function (app) {
   MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
-        var collection = db.collection('library');      
+        var collection = db.collection('library'); 
+        var wait = false;
         console.log('MongoDB initialization successful');
         collection.deleteOne({_id: 1000}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
         })
+        function insert () {
+          collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
+            if(err) console.log(err);
+            else console.log('book successfully inserted: ' + ret);
+            wait = true;
+            return ret.ops[0];
+          });        
+        }
         
-        collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
-          if(err) console.log(err);
-          else console.log('book successfully inserted: ' + ret);
-        });
-        collection.findOne({_id: 1000}, (err, ret) => {
-          if(err) console.log('ERROR: ' + err);
-          !ret ? console.log('No success fam') : console.log(ret);
-        })
+        console.log(!wait);
+        if(wait) {
+          console.log('we"re good man')
+          collection.findOne({_id: 1000}, (err, ret) => {
+            if(err) console.log('ERROR: ' + err);
+            !ret ? console.log('No success fam') : console.log('success fam: ' + ret);
+          })
+        }
         //console.log(sampleId)
   });
   
