@@ -13,7 +13,7 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 const MONGODB_CONNECTION_STRING = process.env.DB;
 
-
+var sampleId = new ObjectId(1000);
 
 module.exports = function (app) {
 
@@ -23,15 +23,16 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');      
         console.log('MongoDB initialization successful');
-        collection.deleteOne({_id: 1000}, (err, ret)=>{
+        collection.deleteOne({_id: sampleId}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
         })
-        collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
+        
+        collection.insertOne({_id: sampleId, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('book successfully inserted: ' + ret);
-        })
-        console.log(ObjectId(1000))
+        });
+        console.log(sampleId)
   });
   
 //routing begins
@@ -90,13 +91,16 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
+      var oid = new ObjectId(bookid);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        console.log(bookid);
-        collection.findOne({_id: ObjectId(bookid)}).then(result=>{
+        console.log(ObjectId(bookid));
+        collection.findOne({_id: sampleId}).then((err,result)=>{
+          if (!err) console.log('ERROR: ' + err);
+          console.log('we in baby');
           result ? console.log(result) : console.log('no result'); 
         });
         
