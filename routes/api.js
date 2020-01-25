@@ -110,7 +110,7 @@ module.exports = function (app) {
         collection.findOne({_id:1000}).then((error,result)=>{
           if (err) return console.log('ERROR: ' + error);
           //console.log('we in baby');
-          result ? console.log(result) : console.log('no result:\n' + result); 
+          result ? console.log(result) : res.send('Book does not exist'); 
         });
         
       });
