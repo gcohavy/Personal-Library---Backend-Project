@@ -116,7 +116,7 @@ module.exports = function (app) {
           //console.log(!result);
           result ? res.json(result) : res.send('Book does not exist'); 
         });
-        console.log(collection.find({_id: 1}))
+        console.log(collection.find({}))
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
