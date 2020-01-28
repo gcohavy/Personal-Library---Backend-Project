@@ -29,20 +29,16 @@ module.exports = function (app) {
           if(err) console.log(err);
           else console.log('delete successfull');
         })
-        function insert () {
           collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
-            else return console.log('book successfully inserted: ' + ret);
-          });   
-        }
-        async function find() {
-          await insert();
+            else console.log(ret);
+          })
+    
           collection.findOne({_id: 1000}, (err, ret) => {
             if(err) console.log('ERROR: ' + err);
             !ret ? console.log('No success fam') : console.log('success fam: ' + ret.ops[0]);
           })
-        }
-        find();
+          
         //console.log(sampleId)
   });
   
