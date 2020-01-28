@@ -106,9 +106,8 @@ suite('Functional Tests', function() {
         .get('/api/books/1000')
         .end((err,res)=>{
           assert.equal(res.status, 200);
-          console.log(res.body);
           assert.equal(res.body.title, 'This is the title');
-          assert.equal(res.body.comments.length(), 1);
+          assert.equal(res.body.comments[0], 'First comment');
           assert.equal(res.body._id, '1000');
           done();
         })
