@@ -36,15 +36,16 @@ module.exports = function (app) {
         
         setTimeout(function (){
           console.log('Happening');
+          console.log(Promise.resolve(collection.findOne({_id: 1000})))
           collection.findOne({_id: 1000}, (err, ret) => {
             console.log('We have made it inside the findone function')
             if(err) console.log('ERROR: ' + err);
             if(!ret) {
               return console.log('No success fam');
             } else{
-              return console.log('success fam: ' + ret.ops[0]);
+              return Promise.resolve(ret).then(console.log('success fam: ' + ret));
             }
-          })}, 1000
+          })}, 100
           )
         
           
@@ -91,7 +92,7 @@ module.exports = function (app) {
         var book = {title: title, comments: []};
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
-          console.log(doc.ops);
+          //console.log(doc.ops);
           return res.json(doc.ops[0]);
         });
       });
@@ -106,7 +107,7 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-    console.log(bookid);
+    //console.log(bookid);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
