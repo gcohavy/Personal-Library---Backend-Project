@@ -29,7 +29,7 @@ module.exports = function (app) {
           if(err) console.log(err);
           else console.log('delete successfull');
         })
-        async function insert () {
+        function insert () {
           collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
             else return console.log('book successfully inserted: ' + ret);
@@ -39,7 +39,7 @@ module.exports = function (app) {
           await insert();
           collection.findOne({_id: 1000}, (err, ret) => {
             if(err) console.log('ERROR: ' + err);
-            !ret ? console.log('No success fam') : console.log('success fam: ' + ret);
+            !ret ? console.log('No success fam') : console.log('success fam: ' + ret.ops[0]);
           })
         }
         find();
@@ -107,10 +107,10 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');      
         //console.log('MongoDB initialization successful');
-        collection.findOne({_id:1000}).then((error,result)=>{
-          if (err) return console.log('ERROR: ' + error);
-          //console.log('we in baby');
-          result ? console.log(result) : res.send('Book does not exist'); 
+        collection.findOne({_id:bookid},(error,result)=>{
+          if (error) return console.log('ERROR: ' + error);
+          console.log(!result);
+          result ? res.json(result) : res.send('Book does not exist'); 
         });
         
       });
