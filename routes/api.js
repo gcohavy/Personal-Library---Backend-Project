@@ -35,15 +35,14 @@ module.exports = function (app) {
           })
         
         setTimeout(function (){
-          console.log('Happening');
-          console.log(Promise.resolve(collection.findOne({_id: 1000})))
+          //console.log('Happening');
           collection.findOne({_id: 1000}, (err, ret) => {
-            console.log('We have made it inside the findone function')
+            //console.log('We have made it inside the findone function')
             if(err) console.log('ERROR: ' + err);
             if(!ret) {
               return console.log('No success fam');
             } else{
-              return Promise.resolve(ret).then(console.log('success fam: ' + ret));
+              return Promise.resolve(ret).then(console.log('success fam: ' + JSON.stringify(ret)));
             }
           })}, 100
           )
@@ -107,11 +106,11 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-    //console.log(bookid);
+      console.log(bookid);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
-        var collection = db.collection('library');      
+        var collection = db.collection('library');  
         //console.log('MongoDB initialization successful');
         collection.findOne({_id:bookid},(error,result)=>{
           if (error) return console.log('ERROR: ' + error);
