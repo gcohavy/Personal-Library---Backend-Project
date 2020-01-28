@@ -31,13 +31,22 @@ module.exports = function (app) {
         })
           collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
-            else console.log(ret);
+            else console.log(ret.ops[0]);
           })
-    
+        
+        setTimeout(function (){
+          console.log('Happening');
           collection.findOne({_id: 1000}, (err, ret) => {
+            console.log('We have made it inside the findone function')
             if(err) console.log('ERROR: ' + err);
-            !ret ? console.log('No success fam') : console.log('success fam: ' + ret.ops[0]);
-          })
+            if(!ret) {
+              return console.log('No success fam');
+            } else{
+              return console.log('success fam: ' + ret.ops[0]);
+            }
+          })}, 1000
+          )
+        
           
         //console.log(sampleId)
   });
