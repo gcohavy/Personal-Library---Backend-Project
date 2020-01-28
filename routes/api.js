@@ -25,18 +25,18 @@ module.exports = function (app) {
         var wait = false;
         console.log('MongoDB initialization successful');
     
-        collection.deleteOne({_id: 1000}, (err, ret)=>{
+        collection.deleteOne({_id: '1000'}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
         })
-          collection.insertOne({_id: 1000, title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
+          collection.insertOne({_id: '1000', title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
             else console.log(ret.ops[0]);
           })
         
         setTimeout(function (){
           //console.log('Happening');
-          collection.findOne({_id: 1000}, (err, ret) => {
+          collection.findOne({_id: '1000'}, (err, ret) => {
             //console.log('We have made it inside the findone function')
             if(err) console.log('ERROR: ' + err);
             if(!ret) {
@@ -91,7 +91,6 @@ module.exports = function (app) {
         var book = {title: title, comments: []};
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
-          //console.log(doc.ops);
           return res.json(doc.ops[0]);
         });
       });
@@ -106,12 +105,12 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-      console.log(bookid);
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');  
         //console.log('MongoDB initialization successful');
+        console.log(bookid);
         collection.findOne({_id:bookid},(error,result)=>{
           if (error) return console.log('ERROR: ' + error);
           console.log(!result);
