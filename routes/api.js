@@ -58,8 +58,8 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library'); 
-        var arr = collection.find({}).toArray();
-        Promise.resulve(arr).then(console.log(JSON.stringify(arr))) 
+        var arr = collection.find().toArray();
+        Promise.resolve(arr).then(console.log(arr)) 
       });
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
