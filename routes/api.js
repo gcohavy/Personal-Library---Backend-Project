@@ -58,22 +58,8 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library'); 
-        collection.find((err, doc)=>{
-          if(err) console.log(err);
-          var result = [];
-          //console.log(doc);
-          if(doc.ops){
-            for (var book in doc.ops) {
-              result.push({title: book.title, _id: book._id, commentcount: book.comments.length()})
-            }
-          }
-          else {
-            result.push({title: 'No Titles', _id:0, commentcount: 0});
-          }
-          
-          //console.log(result);
-          return res.json(result);
-        })
+        var arr = collection.find({}).toArray();
+        Promise.resulve(arr).then(console.log(JSON.stringify(arr))) 
       });
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
@@ -113,11 +99,11 @@ module.exports = function (app) {
         //console.log(bookid);
         collection.findOne({_id:bookid},(error,result)=>{
           if (error) return console.log('ERROR: ' + error);
-          console.log(!result);
+          //console.log(!result);
           result ? res.json(result) : res.send('Book does not exist'); 
         });
         var arr = collection.find({}).toArray();
-        Promise.resolve(arr).then(console.log(arr));
+        //Promise.resolve(arr).then(console.log(JSON.stringify(arr)));
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
