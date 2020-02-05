@@ -6,7 +6,7 @@ dependencies:
   express: 4.17.1
   helmet: 3.21.2
   mocha: 7.0.0
-  mongodb: 3.5.1
+  mongodb: 3.5.2
   zombie: 6.1.4
 packages:
   /@types/chai/4.2.7:
@@ -1335,7 +1335,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-CirsOPbO3jU86YKjjMzFLcXIb5YiGLUrjrXFHoJ3e2z9vWiaZVCZQ2+gtRGMPWF+nFhN6AWwLM/juzAQ6KRkbA==
-  /mongodb/3.5.1:
+  /mongodb/3.5.2:
     dependencies:
       bl: 2.2.0
       bson: 1.1.3
@@ -1348,7 +1348,7 @@ packages:
     optionalDependencies:
       saslprep: 1.0.3
     resolution:
-      integrity: sha512-kpxt4/OfGZ3x9Py+c81yWARLFE3L5UDczF6319Xq0c+pp+8rrzqRiJKjhRAY261JorlRqtrpp7ROK2wCAMA4sw==
+      integrity: sha512-Lxt4th2tK2MxmkDBR5cMik+xEnkvhwg0BC5kGcHm9RBwaNEsrIryvV5istGXOHbnif5KslMpY1FbX6YbGJ/Trg==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -2212,5 +2212,5 @@ specifiers:
   express: ^4.17.1
   helmet: ^3.21.2
   mocha: ^7.0.0
-  mongodb: ^3.5.1
+  mongodb: ^3.5.2
   zombie: ^6.1.4
