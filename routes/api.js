@@ -59,7 +59,7 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library'); 
         var arr = collection.find().toArray();
-        Promise.resolve(arr).then(console.log(arr)) 
+        Promise.resolve(arr).then(array => console.log(array)) 
       });
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
