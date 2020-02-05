@@ -59,7 +59,7 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library'); 
         var arr = collection.find().toArray();
-        Promise.resolve(arr).then(array => console.log(array)) 
+        Promise.resolve(arr).then(array => res.json(array)) 
       });
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
@@ -83,6 +83,13 @@ module.exports = function (app) {
     })
 
     .delete(function(req, res){
+        MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library');
+          collection.deleteMany({});
+          
+        });
       //if successful response will be 'complete delete successful'
     });
 
@@ -116,6 +123,7 @@ module.exports = function (app) {
 
     .delete(function(req, res){
       var bookid = req.params.id;
+      
       //if successful response will be 'delete successful'
     });
 
