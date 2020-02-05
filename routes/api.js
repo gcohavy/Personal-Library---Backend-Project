@@ -113,7 +113,7 @@ module.exports = function (app) {
         //console.log(bookid);
         collection.findOne({_id:bookid},(error,result)=>{
           if (error) return console.log('ERROR: ' + error);
-          //console.log(!result);
+          console.log(!result);
           result ? res.json(result) : res.send('Book does not exist'); 
         });
         var arr = collection.find({}).toArray();
