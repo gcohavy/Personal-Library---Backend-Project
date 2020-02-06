@@ -62,9 +62,7 @@ module.exports = function (app) {
         Promise.resolve(arr).then(array => array.forEach(element => {
           element.commentcount = element.comments.length;
           delete array.comments;
-          result.push(array);
-          console.log(result);
-        }));
+          result.push(array);        }));
         return res.json(result);
       });
         
