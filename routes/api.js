@@ -106,7 +106,6 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library');  
         //console.log('MongoDB initialization successful');
-        //console.log(bookid);
         collection.findOne({_id:bookid},(error,result)=>{
           if(error) console.log(error)
           if (!result) {
@@ -114,7 +113,6 @@ module.exports = function (app) {
           } else {
             res.json(result);
           }
-          
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     });
@@ -126,7 +124,18 @@ module.exports = function (app) {
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
-        var collection = db.collection('library'); 
+        var collection = db.collection('library');
+        var comarray = collection.findOne({_id: bookid}, (err, ret)=> {
+          if(err) console.log(err);
+          return ret.comments;
+        });
+        Promise.resolve(comarray).then( result => {
+          
+        })
+        collection.findOneAndUpdate({_id: bookid}, {comments:comarray}, (err, ret) =>{
+          if(err) console.log(err);
+          res.json(ret);
+        })
       });
       //json res format same as .get
     })
