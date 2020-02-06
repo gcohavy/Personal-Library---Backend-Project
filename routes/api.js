@@ -60,7 +60,10 @@ module.exports = function (app) {
         var result = [];
         var num_of_comments;
         Promise.resolve(arr).then(array => array.forEach(element => {
-          element.commentcount = element.comments.length();
+          element.commentcount = element.comments.length;
+          delete array.comments;
+          result.push(array);
+          console.log(result);
         }));
         return res.json(result);
       });
