@@ -58,8 +58,13 @@ module.exports = function (app) {
         var collection = db.collection('library'); 
         var arr = collection.find().toArray();
         var result = [];
-        Promise.resolve(arr).then(array => res.json(array)) 
+        var num_of_comments;
+        Promise.resolve(arr).then(array => array.forEach(element => {
+          element.commentcount = element.comments.length();
+        }));
+        return res.json(result);
       });
+        
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
     })
