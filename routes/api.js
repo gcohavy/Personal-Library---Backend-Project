@@ -62,7 +62,7 @@ module.exports = function (app) {
           array.forEach(element => {
             element.commentcount = element.comments.length;
             result.push(element); 
-          })
+          });
           res.json(result);}                      
         );
       });
@@ -73,8 +73,7 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');      
-        //console.log('MongoDB initialization successful');
-        
+        //console.log('MongoDB initialization successful');      
         var title = req.body.title;
         if(!title) return res.send('Missing title');
         var book = {title: title, comments: []};
@@ -90,10 +89,11 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');
-          collection.deleteMany({});
-          
+          collection.deleteMany({}, (err, ret) => {
+            if(err) console.log(err)
+            else res.send('complete delete successful');
+          });
         });
-      //if successful response will be 'complete delete successful'
     });
 
 
@@ -108,15 +108,17 @@ module.exports = function (app) {
         //console.log('MongoDB initialization successful');
         //console.log(bookid);
         collection.findOne({_id:bookid},(error,result)=>{
-          if (error) return console.log('ERROR: ' + error);
-          //console.log(!result);
-          result ? res.json(result) : res.send('Book does not exist'); 
-        });
-        var arr = collection.find({}).toArray();
-        //Promise.resolve(arr).then(console.log(JSON.stringify(arr)));
+          if(error) console.log(error)
+          if (!result) {
+            res.send('Book does not exist');
+          } else {
+            res.json(result);
+          }
+          
       });
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
-    })
+    });
+  })
 
     .post(function(req, res){
       var bookid = req.params.id;
