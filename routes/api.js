@@ -23,8 +23,7 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library'); 
         var wait = false;
-        console.log('MongoDB initialization successful');
-    
+        console.log('MongoDB initialization successful');    
         collection.deleteOne({_id: '1000'}, (err, ret)=>{
           if(err) console.log(err);
           else console.log('delete successfull');
@@ -32,8 +31,7 @@ module.exports = function (app) {
           collection.insertOne({_id: '1000', title: 'This is the title', comments: ['First comment']}, (err, ret)=>{
             if(err) console.log(err);
             else console.log(ret.ops[0]);
-          })
-        
+          })        
         setTimeout(function (){
           //console.log('Happening');
           collection.findOne({_id: '1000'}, (err, ret) => {
@@ -59,6 +57,7 @@ module.exports = function (app) {
         var db = client.db('test');
         var collection = db.collection('library'); 
         var arr = collection.find().toArray();
+        var result = [];
         Promise.resolve(arr).then(array => res.json(array)) 
       });
       //response will be array of book objects
@@ -118,12 +117,21 @@ module.exports = function (app) {
     .post(function(req, res){
       var bookid = req.params.id;
       var comment = req.body.comment;
+      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library'); 
+      });
       //json res format same as .get
     })
 
     .delete(function(req, res){
       var bookid = req.params.id;
-      
+      MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
+        if (err) console.log('Error connecting to DB:\n' + err);     
+        var db = client.db('test');
+        var collection = db.collection('library'); 
+      });
       //if successful response will be 'delete successful'
     });
 
