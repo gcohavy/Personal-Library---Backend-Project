@@ -130,12 +130,14 @@ module.exports = function (app) {
           return ret.comments;
         });
         Promise.resolve(comarray).then( result => {
-          
+          console.log(result);
+          comarray.push(comment);
+          collection.findOneAndUpdate({_id: bookid}, {comments:comarray}, (err, ret) =>{
+            if(err) console.log(err);
+            return res.json(ret);
+          })
         })
-        collection.findOneAndUpdate({_id: bookid}, {comments:comarray}, (err, ret) =>{
-          if(err) console.log(err);
-          res.json(ret);
-        })
+       
       });
       //json res format same as .get
     })
