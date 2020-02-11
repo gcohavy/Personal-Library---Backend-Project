@@ -125,7 +125,7 @@ suite('Functional Tests', function() {
         .end((err,res)=>{
           assert.equal(res.status, 200);
           assert.equal(res.body.title, 'This is the title');
-          assert.equal(res.body.comments[0], 'Something Random');
+          assert.equal(res.body.comments[res.body.comments.length-1], 'Something random');
           assert.equal(res.body._id, '1000');
           done();
         })        //done();

@@ -76,7 +76,7 @@ module.exports = function (app) {
         //console.log('MongoDB initialization successful');      
         var title = req.body.title;
         if(!title) return res.send('Missing title');
-        var book = {title: title, comments: []};
+        var book = {title: title, comments: ['Example comment']};
         collection.insertOne(book, function (err, doc) {
           if(err) console.log('Error posting book to library:\n' + err);
           return res.json(doc.ops[0]);
@@ -91,7 +91,7 @@ module.exports = function (app) {
         var collection = db.collection('library');
           collection.deleteMany({}, (err, ret) => {
             if(err) console.log(err)
-            else res.send('complete delete successful');
+            res.send('complete delete successful'); 
           });
         });
     });
@@ -111,6 +111,7 @@ module.exports = function (app) {
           if (!result) {
             res.send('Book does not exist');
           } else {
+            //console.log(result);
             res.json(result);
           }
       });
@@ -125,9 +126,9 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');
-        collection.findOneAndUpdate({_id: bookid}, {$push: {'comments': comment}}, {upsert: true}, (err, ret)=> {
+        collection.findOneAndUpdate({_id: bookid}, {$push: {'comments': comment}}, {upsert: true, returnOriginal: false}, (err, ret)=> {
           if(err) console.log(err);
-          console.log('push: ' + JSON.stringify(ret));
+          //console.log('push: ' + JSON.stringify(ret));
           return res.json(ret.value);
         });
         
@@ -142,6 +143,10 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library'); 
+        collection.deleteOne({_id: bookid}, (err, ret) => {
+          if(err) console.log(err);
+          res.send('delete successful');
+        })
       });
       //if successful response will be 'delete successful'
     });
