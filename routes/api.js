@@ -127,7 +127,7 @@ module.exports = function (app) {
         var collection = db.collection('library');
         var comarray = collection.findOne({_id: bookid}, (err, ret)=> {
           if(err) console.log(err);
-          return ret.comments;
+          return ret;
         });
         Promise.resolve(comarray).then( result => {
           console.log(result);

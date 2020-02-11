@@ -121,11 +121,11 @@ suite('Functional Tests', function() {
       test('Test POST /api/books/[id] with comment', function(done){
         chai.request(server)
         .post('/api/books/1000')
-        .send({})
+        .send({comment: 'Something random'})
         .end((err,res)=>{
           assert.equal(res.status, 200);
           assert.equal(res.body.title, 'This is the title');
-          assert.equal(res.body.comments[0], 'First comment');
+          assert.equal(res.body.comments[0], 'Something Random');
           assert.equal(res.body._id, '1000');
           done();
         })        //done();
