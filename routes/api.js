@@ -125,9 +125,10 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');
-        collection.findOneAndUpdate({_id: bookid}, {$push: {comments: comment}}, (err, ret)=> {
+        collection.findOneAndUpdate({_id: bookid}, {$push: {'comments': comment}}, {upsert: true}, (err, ret)=> {
           if(err) console.log(err);
           console.log('push: ' + JSON.stringify(ret));
+          return res.json(ret.value);
         });
         
        
@@ -136,7 +137,7 @@ module.exports = function (app) {
     })
 
     .delete(function(req, res){
-      var bookid = req.params.id;
+      var bookid = req.params.id; 
       MongoClient.connect(MONGODB_CONNECTION_STRING, {useUnifiedTopology: true, useNewUrlParser: true}, function(err, client) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
