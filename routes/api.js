@@ -125,13 +125,10 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');
-        var comarray = [];
-        collection.findOne({_id: bookid}, (err, ret)=> {
+        collection.findOneAndUpdate({_id: bookid}, {$push: {comments: comment}}, (err, ret)=> {
           if(err) console.log(err);
           console.log('push: ' + JSON.stringify(ret));
-          return JSON.stringify(ret);
         });
-        console.log('Something ' + comarray);
         
        
       });
