@@ -125,19 +125,14 @@ module.exports = function (app) {
         if (err) console.log('Error connecting to DB:\n' + err);     
         var db = client.db('test');
         var collection = db.collection('library');
-        var comarray = collection.findOne({_id: bookid}, (err, ret)=> {
+        var comarray = [];
+        collection.findOne({_id: bookid}, (err, ret)=> {
           if(err) console.log(err);
-          console.log('push: ' + ret);
-          return ret.comments;
+          console.log('push: ' + JSON.stringify(ret));
+          return JSON.stringify(ret);
         });
-        Promise.resolve(comarray).then( result => {
-          console.log(result);
-          //result.push(comment);
-          collection.findOneAndUpdate({_id: bookid}, {comments:comarray}, (err, ret) =>{
-            if(err) console.log(err);
-            return res.json(ret);
-          })
-        })
+        console.log('Something ' + comarray);
+        
        
       });
       //json res format same as .get
