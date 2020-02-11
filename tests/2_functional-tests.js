@@ -119,7 +119,16 @@ suite('Functional Tests', function() {
     suite('POST /api/books/[id] => add comment/expect book object with id', function(){
       
       test('Test POST /api/books/[id] with comment', function(done){
-        //done();
+        chai.request(server)
+        .post('/api/books/1000')
+        .send({})
+        .end((err,res)=>{
+          assert.equal(res.status, 200);
+          assert.equal(res.body.title, 'This is the title');
+          assert.equal(res.body.comments[0], 'First comment');
+          assert.equal(res.body._id, '1000');
+          done();
+        })        //done();
       });
       
     });
